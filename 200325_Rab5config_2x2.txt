@@ -1,0 +1,185 @@
+# File Rab5config.csv, by Urban Bezeljak.
+# Rab5 activation network
+# units are micrometer, second
+
+#### To run, "| cd C:\Program Files\Smoldyn |" then "| smoldyn "C:\PhD\Model\2004012_Rab5config.csv" |".
+
+define SIMnum 1
+define GEFnum 20
+
+
+#Parameters
+	#Diffusion coefficients 
+define D_sol				10		# Protein diffusion coefficient in solution (um^2/s) Halatek2018
+define D_mem				0.3		# Protein diffusion coefficient on membrane (um^2/s) 
+
+	
+	#Reaction rates
+define k_1			0.01		# RabGDP:GDI complex dissociation rate (s^-1)
+define k_2			0.00007		# RabGDP:GDI complex association rate (um^3/s) 
+define k_3			0.00050		# Rab5 intrinsic GTPase activity (s^-1)
+define k_4			0.000003	# Basal RR activatopn rate (um^3/s)
+define k_5	 		0.00003		# Rab5GTP:RR complex association rate (um^3/s)
+define k_6 			0.1			# Rab5GTP:RR complex dissociation rate (s^-1)
+define k_7			0.01		# Positive feedback Rab5 activation rate (um^3/s)
+define k_8			0.00015		# GDI extraction rate (um^3/s)
+define k_rab		10			# Rab5 adsorption to the membrane (um/s)
+define k_rr_on		0.01		# RR adsorption to the membrane (um/s)
+define k_rr_off		1			# Rabex5 desorptoin from the membrane (s^-1)
+
+	#Inital numbers
+define N_Rab5GTP		0			# number of Rab5GTP on the membrane
+define N_Rab5GDP		0
+define N_Rab5GDP:GDI	1000		# number of Rab5GDP:GDI in solution
+define N_GDI			4000 		# number of free GDI in solution
+define N_RR			 	GEFnum 		# number of Rabex5:Rabaptin5 in solution
+define N_Rab5RR 		0
+
+
+#Simulation
+define t_STOP 12600	# stopping time
+
+# graphics none
+graphics opengl
+#graphic_iter 1000
+#tiff_iter 10000
+
+#Geometry
+dim 3
+boundaries x 0 4 p	
+boundaries y 0 4 p	
+boundaries z 0 0.2 p
+
+frame_thickness 0
+
+time_start 0
+time_stop t_STOP
+time_step 0.05			# 10 ms time step (default from User manual)
+
+accuracy 5
+molperbox 4
+
+#List of molecular species
+species Rab5GDP
+species Rab5GTP
+species Rab5GDP:GDI
+species GDI
+species	RR
+species Rab5GTP:RR
+
+molecule_lists list1 list2 list3 list4 list5 list6  #molecule list to speed up the simulation
+mol_list Rab5GDP(all) list1
+mol_list Rab5GTP(all) list2
+mol_list Rab5GDP:GDI(fsoln) list3
+mol_list GDI(all) list4
+mol_list RR(all) list5
+mol_list Rab5GTP:RR(all) list6
+
+difc Rab5GDP(front) D_mem
+difc Rab5GDP(fsoln) D_sol
+difc Rab5GTP(front) D_mem
+difc GDI(fsoln) D_sol
+difc Rab5GDP:GDI(fsoln) D_sol
+difc RR(fsoln) D_sol
+difc RR(front) D_mem
+difc Rab5GTP:RR(front) D_mem
+
+color Rab5GDP(front) red	
+color Rab5GTP(front) green
+color GDI(fsoln) orange	
+color Rab5GDP:GDI(fsoln) rose
+color RR(fsoln) lightblue
+color RR(front) blue
+color Rab5GTP:RR(front) purple
+
+display_size all(solution) 3
+display_size all(front) 7
+
+start_surface walls 
+	color both 0 0 1 0.05
+	action both all reflect
+	panel rect +x 0 0 0 4 0.2
+	panel rect -x 4 0 0 4 0.2
+	panel rect -y 0 0 0 4 0.2
+	panel rect +y 0 4 0 4 0.2 
+	panel rect +z 0 0 0.2 4 4 
+end_surface
+
+start_surface membrane
+	action both all reflect
+	neighbor_action stay
+	rate Rab5GDP fsoln front k_rab
+	rate RR fsoln front k_rr_on
+	rate RR front fsoln k_rr_off
+	color both 0 0 1 1.0
+	polygon both edge
+	panel rect +z 0 0 0 2 2
+	panel rect +z 0 2 0 2 2
+	panel rect +z 2 0 0 2 2
+	panel rect +z 2 2 0 2 2
+
+	# panel rect +z 2 4 0 2 2
+	# panel rect +z 4 2 0 2 2
+	# panel rect +z 0 4 0 2 2
+	# panel rect +z 4 0 0 2 2
+	# panel rect +z 4 4 0 2 2
+
+end_surface
+
+
+#Reactions
+reaction rxn_1_1 Rab5GDP:GDI(fsoln) <-> Rab5GDP(fsoln) + GDI(fsoln) k_1 k_2
+product_placement rxn_1_1fwd pgemmax 0.9
+reaction rxn_1_2 Rab5GDP(front) + GDI(fsoln) -> Rab5GDP:GDI(fsoln) k_8
+reaction rxn_2 Rab5GTP(front) -> Rab5GDP(front) k_3
+reaction rxn_3_1 Rab5GDP(front) + RR(fsoln) -> Rab5GTP(front) + RR(fsoln) k_4
+reaction rxn_3_2 Rab5GDP(front) + RR(front) -> Rab5GTP(front) + RR(fsoln) k_4
+reaction rxn_4_1 Rab5GTP(front) + RR(fsoln) <-> Rab5GTP:RR(front) k_5 k_6
+reaction rxn_4_2 Rab5GTP(front) + RR(front) <-> Rab5GTP:RR(front) k_5 k_6
+reaction rxn_5_2 Rab5GTP:RR(front) + Rab5GDP(front) -> Rab5GTP:RR(front) + Rab5GTP(front) k_7
+reaction_serialnum rxn_5_2 r1 + new
+reaction_log output_rxn5_2004012sim_GEFnum_SIMnum.csv rxn_5_2 all
+
+### CROWDING
+
+
+reaction crowding3 Rab5GTP(front) + Rab5GTP(front) -> Rab5GTP(front) + Rab5GTP(front)
+binding_radius crowding3 0.005
+product_placement crowding3 bounce
+
+
+mol N_Rab5GDP:GDI Rab5GDP:GDI(fsoln) u u u
+mol N_GDI GDI(fsoln) u u u
+mol N_RR RR(fsoln) u u u
+surface_mol N_Rab5GTP Rab5GTP(front) membrane all all  
+surface_mol N_Rab5GDP Rab5GDP(front) membrane all all  
+surface_mol N_Rab5RR Rab5GTP:RR(front) membrane all all 
+
+# Equilibarate the system in the 1st minute
+cmd i 0 59 1 fixmolcount RR 0
+cmd @ 60 fixmolcount RR N_RR
+# Maintain the molecule count during first 500 active Rab5
+cmd e ifless Rab5GTP(front) 500 fixmolcount Rab5GDP:GDI N_Rab5GDP:GDI
+cmd e ifless Rab5GTP(front) 500 fixmolcountrange GDI N_GDI N_GDI+N_Rab5GDP:GDI
+
+
+text_display time Rab5GDP(front) Rab5GTP(all) Rab5GDP:GDI(all) GDI(all) RR(all) Rab5GTP:RR(all)
+
+output_root results\2004012\
+
+output_files output_molcount_2004012sim_SIMnum_GEFnum.csv output_molpos_RabGTP_2004012sim_GEFnum_SIMnum.csv output_molpos_RabGTPRR_2004012sim_GEFnum_SIMnum.csv output_molpos_RR_2004012sim_GEFnum_SIMnum.csv output_molpos_RabGDP_2004012sim_GEFnum_SIMnum.csv
+output_files output_restime_RabGTP_2004012sim_GEFnum_SIMnum.csv output_restime_RabGDP_2004012sim_GEFnum_SIMnum.csv output_rxn5_2004012sim_GEFnum_SIMnum.csv
+cmd b molcountheader output_molcount_2004012sim_SIMnum_GEFnum.csv
+output_format csv
+cmd n 100 molcount output_molcount_2004012sim_SIMnum_GEFnum.csv
+cmd n 500 molpos Rab5GTP(front) output_molpos_RabGTP_2004012sim_GEFnum_SIMnum.csv
+cmd n 500 molpos Rab5GTP:RR(front) output_molpos_RabGTPRR_2004012sim_GEFnum_SIMnum.csv
+cmd n 500 molpos RR(front) output_molpos_RR_2004012sim_GEFnum_SIMnum.csv
+cmd n 500 molpos Rab5GDP(front) output_molpos_RabGDP_2004012sim_GEFnum_SIMnum.csv
+cmd e residencetime Rab5GTP(front) a e 0 5 500 output_restime_RabGTP_2004012sim_GEFnum_SIMnum.csv
+cmd e residencetime Rab5GDP(front) a e 0 5 500 output_restime_RabGDP_2004012sim_GEFnum_SIMnum.csv
+cmd n 2000 executiontime stdout
+
+
+end_file
+
