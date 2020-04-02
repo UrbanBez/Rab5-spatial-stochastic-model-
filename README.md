@@ -67,7 +67,7 @@ Smoldyn uses parameters in micrometer and second units, which have to be recalcu
 *  continous membrane (periodic walls): [200330_Rab5config_nobounds.txt](200330_Rab5config_nobounds.txt) 
 
 ### Python script for parameter scans
-An example of Python script to run muntiple simulations with different GEF numbers:
+An example of Python script to run multiple simulations with different GEF numbers:
 ```python
 import os
 from subprocess import call
