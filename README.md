@@ -1,6 +1,7 @@
 # Rab5 spatial stochastic model
 
-This repository hosts the Rab5 activation stochastic model development, which supports the Loose and Saunders lab project with tentative title **"Stochastic nucleation events trigger collective Rab GTPase activation"**.
+This repository hosts the Rab5 activation stochastic model development, which supports the Loose and Saunders lab project with tentative title
+**"Stochastic nucleation events trigger collective Rab GTPase activation"**.
 
 The basic model was implemented with [Smoldyn](http://www.smoldyn.org/) stochastic simulator. 
 
