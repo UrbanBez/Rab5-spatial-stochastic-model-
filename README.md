@@ -27,7 +27,7 @@ By far the best resource is the Smoldyn User Manual and Examples, which are incl
 
 ## Model
 
-The basic model includes the following reactions:
+The basic model simulates a 4x4x0.2 um box and includes the following reactions:
 
 ```
 reaction rxn_1_1 Rab5GDP:GDI(fsoln) <-> Rab5GDP(fsoln) + GDI(fsoln) k_1 k_2
@@ -57,5 +57,11 @@ Smoldyn uses parameters in micrometer and second units, which have to be recalcu
 | k_rr_off | / | 1 s-1 |
 
 ### Model configuration files
+*  Default model with 5x5 grid: [200325_Rab5config.txt](200325_Rab5config.txt) 
+*  4x4 grid: [200325_Rab5config_4x4.txt](200325_Rab5config_4x4.txt)
+*  3x3 grid: [200325_Rab5config_3x3.txt](200325_Rab5config_3x3.txt)
+*  2x2 grid: [200325_Rab5config_2x2.txt](200325_Rab5config_2x2.txt)
+*  1x1 grid (4x4 um membrane with rigid walls): [200325_Rab5config_1x1.txt](200325_Rab5config_4x4.txt)
+*  continous membrane (periodic walls): [200330_Rab5config.txt](200330_Rab5config.txt) 
 
 ### Python script for parameter scans
