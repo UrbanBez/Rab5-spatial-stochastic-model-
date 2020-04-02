@@ -9,16 +9,16 @@ The basic model was implemented with [Smoldyn](http://www.smoldyn.org/) stochast
 [Smoldyn](http://www.smoldyn.org/) is a particle based stochastic simulator, which alows detailed spatial simulations of reaction-diffusion systems. Smoldyn was created by Steve Andrews (Seattle University). You can find out more in:
 *  Andrews, S.S., Addy, N.J., Brent, R., and Arkin, A.P. (2010). Detailed simulations of cell biology with Smoldyn 2.1. PLoS Comput. Biol. 6, e1000705.
 
-**Instalation and running models**
+### Instalation and running models
 
-To install Smoldyn:
+**To install Smoldyn:**
 1.  Download pre-compiled install package from the [website](http://www.smoldyn.org/download.html).
 2. Extract the zip file to the desired location.
 3. Open “Command Prompt” as administrator.
 4. Change directories to the newly extracted Smoldyn directory (e.g. type `cd C:\Users\username\Downloads\smoldyn-2.xx-windows)`.
 5. Type “install”. This copies all of the Smoldyn executable files to a Smoldyn subdirectory inside your “C:\Program Files” directory.
 
-To run Smoldyn:
+**To run Smoldyn:**
 1.  Navigate Command prompt to Smoldyn instalation folder (e.g. \Program Files\Smoldyn)
 2.  run with `smoldyn "model_filepath.txt"` 
 
@@ -55,3 +55,7 @@ Smoldyn uses parameters in micrometer and second units, which have to be recalcu
 | k_rab | / | 10 um s-1  |
 | k_rr_on | / | 0.01 um s-1  |
 | k_rr_off | / | 1 s-1 |
+
+### Model configuration files
+
+### Python script for parameter scans
