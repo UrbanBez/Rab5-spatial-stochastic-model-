@@ -1,6 +1,7 @@
 # Rab5 spatial stochastic model
 
 This repository hosts the Rab5 activation stochastic model development, which supports the Loose and Saunders lab project with tentative title
+
 **"Stochastic nucleation events trigger collective Rab GTPase activation"**.
 
 The basic model was implemented with [Smoldyn](http://www.smoldyn.org/) stochastic simulator. 
@@ -66,3 +67,18 @@ Smoldyn uses parameters in micrometer and second units, which have to be recalcu
 *  continous membrane (periodic walls): [200330_Rab5config_nobounds.txt](200330_Rab5config_nobounds.txt) 
 
 ### Python script for parameter scans
+An example of Python script to run muntiple simulations with different GEF numbers:
+```python
+import os
+from subprocess import call
+import time
+
+filepath = input("Enter filepath (e.g. L:\Modeling\200325_Rab5config.txt): ") 
+print(filepath) 
+
+for gefnum in [10,20,40,60,80,120,160,200,400]:
+    time.sleep(0.5)
+    dir = r"C:\Program Files\Smoldyn"
+    cmdline = r"smoldyn %s --define GEFnum=%i -tqw" %(filepath,gefnum) #insert config file path
+    rc = call("start cmd /K " + cmdline, cwd=dir, shell=True)
+```
