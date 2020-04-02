@@ -63,6 +63,6 @@ Smoldyn uses parameters in micrometer and second units, which have to be recalcu
 *  3x3 grid: [200325_Rab5config_3x3.txt](200325_Rab5config_3x3.txt)
 *  2x2 grid: [200325_Rab5config_2x2.txt](200325_Rab5config_2x2.txt)
 *  1x1 grid (4x4 um membrane with rigid walls): [200325_Rab5config_1x1.txt](200325_Rab5config_4x4.txt)
-*  continous membrane (periodic walls): [200330_Rab5config.txt](200330_Rab5config.txt) 
+*  continous membrane (periodic walls): [200330_Rab5config_nobounds.txt](200330_Rab5config_nobounds.txt) 
 
 ### Python script for parameter scans
